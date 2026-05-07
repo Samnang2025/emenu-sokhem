@@ -1,7 +1,9 @@
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig = {
-  /* config options here */
+  experimental: {
+    serverComponentsExternalPackages: ['puppeteer', 'pdf-to-printer'],
+  },
 };
 
 export default nextConfig;
