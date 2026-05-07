@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
 
+type PrintRequestBody = {
+  html?: string;
+  printerName?: string;
+};
+
 /**
  * DirectPrint API Route
  * 
@@ -19,7 +24,7 @@ const TMP_DIR = path.join(process.cwd(), 'print-server', 'tmp');
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = (await request.json()) as PrintRequestBody;
     const { html, printerName } = body;
 
     if (!html || !printerName) {

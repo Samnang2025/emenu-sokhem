@@ -4,6 +4,12 @@
  * Works from any device (PC, phone, etc.) — no separate print server needed.
  */
 
+type PrintResponse = {
+  status: 'ok' | 'error';
+  printer?: string;
+  message?: string;
+};
+
 export function connectWS() {
   // No-op — kept for backward compatibility with PrintConnection.tsx
   // Printing now goes through the /api/print API route
@@ -25,7 +31,7 @@ async function sendPrintJob(html: string, printerName: string) {
       body: JSON.stringify({ html, printerName }),
     });
 
-    const result = await response.json();
+    const result = (await response.json()) as PrintResponse;
 
     if (result.status === 'ok') {
       console.log(`[DirectPrint] ✅ Printed on "${result.printer}"`);
