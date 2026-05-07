@@ -134,7 +134,7 @@ export default function Home() {
   return (
     <Provider store={store}>
 
-      <div className="w-full px-3 py-1 fixed flex flex-col gap-2 max-w-[575px] bg-white z-10 left-1/2 -translate-x-1/2">
+      <div className="w-full px-3 py-1 fixed flex flex-col gap-2 max-w-[575px] bg-white z-10">
         <div className="flex justify-between items-center">
           <NavBar />
 
@@ -154,7 +154,7 @@ export default function Home() {
         {/*Sok Thean Subcategory*/}
         {/* SubCategory section */}
         {data[activeSection] && (
-          <ul className="no-scrollbar flex flex-nowrap gap-2 overflow-x-scroll justify-center" style={{ "margin": "0px 60px" }}>
+          <ul className="no-scrollbar flex flex-nowrap gap-2 overflow-x-scroll" style={{ "margin": "0px 60px" }}>
             {Array.from(new Set(data[activeSection].items.map(item => {
               const sub = item.subcategory;
               return sub && sub.trim() !== "" ? sub.trim() : "Other";
@@ -179,12 +179,12 @@ export default function Home() {
         <SearchBar query={searchQuery} onSearch={handleSearchInput} />
       </div>
 
-      <main className=" pb-[150px] fixed top-3 h-full w-full mt-52 max-[600px]:mt-48  max-w-[575px] overflow-scroll scroll-smooth scroll-pt-0 left-1/2 -translate-x-1/2">
+      <main className=" pb-[150px] fixed top-3 h-full w-full mt-52 max-[600px]:mt-48  max-w-[575px] overflow-scroll scroll-smooth scroll-pt-0">
         {/* Navigation and search bar */}
 
 
         {/* Main content section */}
-        <section className="px-3 mt-5 text-center">
+        <section className="px-3 mt-5 ">
           {/* Display image slider when no search query */}
           {searchQuery.trim().length <= 0 && <ImageSlider images={images} />}
 
@@ -290,7 +290,7 @@ export default function Home() {
                                 {subName}
                               </h2>
                             )}
-                            <div className="flex flex-wrap flex-row justify-center gap-y-4">
+                            <div className="flex flex-wrap flex-row justify-between gap-y-4">
                               {category.items
                                 .filter(item => {
                                   const sub = item.subcategory;
@@ -319,7 +319,7 @@ export default function Home() {
         </section>
 
         {/* Bottom action bar */}
-        <div className="fixed bottom-0 p-3 max-w-[575px] items-center w-full cursor-pointer rounded-t-xl bg-white flex justify-between left-1/2 -translate-x-1/2">
+        <div className="fixed bottom-0 p-3 max-w-[575px] items-center w-full cursor-pointer rounded-t-xl bg-white flex justify-between">
 
         </div>
 

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
+import "@/app/globals.css";
 import { Menu } from "@/types/model";
 import { addToCart } from "@/lib/cart/cartSlice";
 import { RootState } from "@/lib/store";

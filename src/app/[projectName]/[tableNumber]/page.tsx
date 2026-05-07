@@ -137,7 +137,7 @@ export default function Home() {
   return (
     <Provider store={store}>
 
-      <div className="w-full px-3 py-1 fixed flex flex-col gap-2 max-w-[575px] bg-white z-10 left-1/2 -translate-x-1/2">
+      <div className="w-full  px-3 py-1 fixed flex flex-col gap-2 max-w-[575px] bg-white z-10">
         <NavBar />
         <ul className="no-scrollbar flex flex-nowrap gap-2 overflow-x-scroll" style={{ "paddingBottom": "5px", "borderBottom": "1px solid #4d4f55ff" }}>
           {data.map((item, index) => (
@@ -178,7 +178,7 @@ export default function Home() {
         <SearchBar query={searchQuery} onSearch={handleSearchInput} />
       </div>
 
-      <main className=" pb-[150px] fixed top-3 h-full w-full mt-52 max-[600px]:mt-48  max-w-[575px] overflow-scroll scroll-smooth scroll-pt-0 left-1/2 -translate-x-1/2"> {/* Sok Thean popup Component */}
+      <main className=" pb-[200px] fixed top-3 h-full w-full mt-52 max-[600px]:mt-48  max-w-[575px] overflow-scroll scroll-smooth scroll-pt-0"> {/* Sok Thean popup Component */}
         {/* Navigation and search bar */}
 
 
