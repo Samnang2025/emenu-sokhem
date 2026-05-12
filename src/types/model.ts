@@ -76,8 +76,11 @@ interface orderHistoryType {
     total_price: string; // Total price of the order
     suspend_note: string; // Note for the suspended order
     table_id: string; // ID of the table associated with the order
+<<<<<<< HEAD
     table_name?: string; // Table name from the API
     table_num?: string; // Table number from the API
+=======
+>>>>>>> 902f8cf (new update)
   };
   items: orderHistory[]; // Array of items in the order
 }

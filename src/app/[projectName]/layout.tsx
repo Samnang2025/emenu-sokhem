@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 
 import "../globals.css"
+<<<<<<< HEAD
 import { NavBar, PrintConnection } from "@/components/core";
+=======
+import { NavBar } from "@/components/core";
+>>>>>>> 902f8cf (new update)
 import I18nProvider from "@/lib/i18n";
 import '../../../public/fonts/style.css';
 import axios from "axios";
@@ -37,7 +41,10 @@ export default function RootLayout({
       <body className="m-auto max-w-[575px]">
         <div className=" h-screen bg-white overflow-auto max-w-[575px] w-full ">
           <I18nProvider>
+<<<<<<< HEAD
             <PrintConnection />
+=======
+>>>>>>> 902f8cf (new update)
             {children}
           </I18nProvider>
         </div>
