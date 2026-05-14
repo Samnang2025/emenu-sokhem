@@ -215,9 +215,6 @@ export default function OrderItem({ cur }: any) {
   };
   // my code old
 
-  const dispatch = useDispatch()
-
-
   const handleOrder = async () => {
     setIsLoading(true);
     const loading = toast.info("កំពុងធ្វើការកុម្ម៉ង់...", {
