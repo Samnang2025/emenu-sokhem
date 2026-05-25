@@ -11,6 +11,8 @@ export default {
     },
   },
 
+  buildCommand: "npx next build",
+
   middleware: {
     external: true,
     override: {
