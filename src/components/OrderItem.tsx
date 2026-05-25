@@ -213,7 +213,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       };
       const jsonData = JSON.stringify(data)
       const response = await axios.post(
-        `https://${projectName}.tsdsolution.net/api/DriverController/suspend`,
+        `https://${projectName}.tsdsolution.net/api/DriverController/order`,
         jsonData,
         {
           headers: {
