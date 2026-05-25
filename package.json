@@ -5,6 +5,7 @@
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.3",
     "daisyui": "^5.0.4",
+    "express": "^5.2.1",
     "next": "14.2.23",
     "numeral": "^2.0.6",
     "pdf-to-printer": "^5.8.0",
@@ -32,6 +33,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "start:print-server": "node print-server/server.js"
   }
 }

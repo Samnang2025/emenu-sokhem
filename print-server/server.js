@@ -6,6 +6,17 @@ async function createServer() {
   const expressP = express();
   expressP.use(express.json({ limit: '20mb' }));
 
+  // Enable CORS manually to allow the client app (hosted on Vercel) to talk to the local print server
+  expressP.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    next();
+  });
+
   const TMP_DIR = path.join(__dirname, 'tmp');
   if (!fs.existsSync(TMP_DIR)) fs.mkdirSync(TMP_DIR, { recursive: true });
 
