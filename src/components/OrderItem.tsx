@@ -173,11 +173,16 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
     });
 
     if (!success) {
-      toast.error(`ការបោះពុម្ពទៅកាន់ម៉ាស៊ីន "${printerName}" បរាជ័យ! សូមពិនិត្យមើលម៉ាស៊ីនបោះពុម្ព ឬ Print Server។`, {
-        autoClose: 4000,
-        position: "top-center",
-        className: "font-battambang"
-      });
+      // Fallback to browser print if DirectPrint server is not running
+      const printWindow = window.open('', '_blank', 'height=600,width=400');
+      if (!printWindow) return;
+      printWindow.document.write(content);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 500);
     }
   };
   // my code old
@@ -232,7 +237,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
         const brand = item.brand?.toLowerCase();
         return brand !== 'drink' && brand !== 'standard';
       });
-      
+
       if (kitchenItems.length > 0) await handlePrint(kitchenItems, "food");
       if (drinkItems.length > 0) await handlePrint(drinkItems, "drink");
       // end akk
@@ -328,46 +333,46 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
             <div className="w-full bg-transparent border-[1px] border-dashed border-black"></div>
             <div className="w-full px-4">
 
-           {/* new order  */}
+              {/* new order  */}
               {basket.length == 0 ? (<></>) : <h1 className="text-center font-dangrek p-2 mb-5">{t("newOrder")}</h1>}
-           {/* item cart  */}
-            {
-              basket.map((item, index) => (
-                <>
-                <Item key={index} cartItem={item} cur={cur}/>
-                
-                </>
-              ))
-            }
-           </div>
-            {basket.length == 0 ? (<></>) : (<button onClick={handleOrder} className="bg-orange font-dangrek p-2 px-5 rounded-full text-white mt-2">{t("placeOrder")}</button>)}
-           
-            {/* history order section  */}
-           { historyOrder  ? (
-            <div className="w-full px-3 ">
-                <h1 className="font-dangrek text-center mt-5">{t("completedOrder")}</h1>
-              <div className="flex flex-col w-full space-y-3">
-                {
-                  historyOrder?.items?.map((item: any, index: any) => (
-                    <>
-                      <HistoryOrder key={index} cartItem={item} cur={cur} />
-                    </>
-                  ))
-                }
-              </div>
+              {/* item cart  */}
+              {
+                basket.map((item, index) => (
+                  <>
+                    <Item key={index} cartItem={item} cur={cur} />
+
+                  </>
+                ))
+              }
             </div>
+            {basket.length == 0 ? (<></>) : (<button onClick={handleOrder} className="bg-orange font-dangrek p-2 px-5 rounded-full text-white mt-2">{t("placeOrder")}</button>)}
+
+            {/* history order section  */}
+            {historyOrder ? (
+              <div className="w-full px-3 ">
+                <h1 className="font-dangrek text-center mt-5">{t("completedOrder")}</h1>
+                <div className="flex flex-col w-full space-y-3">
+                  {
+                    historyOrder?.items?.map((item: any, index: any) => (
+                      <>
+                        <HistoryOrder key={index} cartItem={item} cur={cur} />
+                      </>
+                    ))
+                  }
+                </div>
+              </div>
             ) : (<></>)
             }
             {/* summary section  */}
             <div className="w-full flex flex-col space-y-2 p-3">
-             <p className="text-lg flex flex-row justify-between">
+              <p className="text-lg flex flex-row justify-between">
                 <span className="font-dangrek  " >{t("totalItems")}:</span>
-             <span className="font-bold">{historyOrder ? parseInt(historyOrder.data.totalItems) + totalItems: totalItems}</span>
-             </p>
-             <p className="text-xl flex flex-row text-orange-500  justify-between">
+                <span className="font-bold">{historyOrder ? parseInt(historyOrder.data.totalItems) + totalItems : totalItems}</span>
+              </p>
+              <p className="text-xl flex flex-row text-orange-500  justify-between">
                 <span className="font-dangrek  " >{t("totalAmount")}:</span>
                 <span className="font-bold">{cur || "$"}{historyOrder ? numeral(parseFloat(historyOrder.data.total_price) + totalPrice).format('0.[00]') : numeral(totalPrice).format('0.[00]')}</span>
-             </p>
+              </p>
             </div>
             <div className="mt-5">
               <Footer></Footer>
