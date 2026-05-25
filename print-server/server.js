@@ -6,7 +6,7 @@ async function createServer() {
   const expressP = express();
   expressP.use(express.json({ limit: '20mb' }));
 
-  // Enable CORS manually to allow the client app (hosted on Vercel) to talk to the local print server
+  // Enable CORS middleware to allow local and external network cross-origin print requests
   expressP.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -40,10 +40,17 @@ async function createServer() {
       await page.pdf({ path: tmpFile, width: '80mm', printBackground: true, margin: { top: '2mm', right: '2mm', bottom: '2mm', left: '2mm' } });
       await browser.close();
 
-      await pdfToPrinter.print(tmpFile, { printer: printerName });
+      // Printer mapping logic: map logical names to physical Windows printers
+      const physicalPrinter = 
+        printerName.toLowerCase() === 'kitchen' ? (process.env.PRINTER_KITCHEN || 'kitchen') :
+        printerName.toLowerCase() === 'drink' ? (process.env.PRINTER_DRINK || 'drink') :
+        printerName;
+
+      console.log(`[print-server] Logical printer "${printerName}" mapped to physical printer "${physicalPrinter}"`);
+      await pdfToPrinter.print(tmpFile, { printer: physicalPrinter });
 
       // cleanup
-      fs.unlink(tmpFile, () => {});
+      fs.unlink(tmpFile, () => { });
 
       return res.json({ status: 'ok', printer: printerName });
     } catch (err) {
@@ -52,7 +59,7 @@ async function createServer() {
     }
   });
 
-  const port = process.env.PRINT_SERVER_PORT || 3001;
+  const port = process.env.PRINT_SERVER_PORT || 8085;
   expressP.listen(port, () => console.log(`[print-server] Listening on http://0.0.0.0:${port}`));
 }
 

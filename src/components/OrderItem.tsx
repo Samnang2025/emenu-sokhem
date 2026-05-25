@@ -173,16 +173,24 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
     });
 
     if (!success) {
-      // Fallback to browser print if DirectPrint server is not running
-      const printWindow = window.open('', '_blank', 'height=600,width=400');
-      if (!printWindow) return;
-      printWindow.document.write(content);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 500);
+      // Fallback to browser print only on localhost or if explicitly enabled via query param / localStorage (e.g. for cashier/waiter tablets)
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const enableFallback = typeof window !== 'undefined' && (window.localStorage.getItem('enable_print_fallback') === 'true' || window.location.search.includes('print_fallback=true'));
+
+      if (isLocal || enableFallback) {
+        console.log('[DirectPrint] DirectPrint server not reachable, falling back to browser print.');
+        const printWindow = window.open('', '_blank', 'height=600,width=400');
+        if (!printWindow) return;
+        printWindow.document.write(content);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+          printWindow.print();
+          printWindow.close();
+        }, 500);
+      } else {
+        console.log('[DirectPrint] DirectPrint server not reachable. Skipped browser print fallback on guest device.');
+      }
     }
   };
   // my code old
