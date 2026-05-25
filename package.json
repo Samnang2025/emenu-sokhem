@@ -17,7 +17,7 @@
     "swiper": "^11.2.5"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^0.5.3",
+    "@opennextjs/cloudflare": "0.6.6",
     "@types/node": "22.9.1",
     "@types/numeral": "^2.0.5",
     "@types/react": "18.3.12",
