@@ -32,6 +32,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "start:print-server": "node print-server/server.js"
   }
 }
