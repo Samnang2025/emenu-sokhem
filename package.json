@@ -36,6 +36,7 @@
     "lint": "next lint",
     "start": "next start",
     "deploy": "wrangler deploy",
-    "preview": "wrangler dev"
+    "preview": "wrangler dev",
+    "start:print-server": "node print-server/server.js"
   }
 }
