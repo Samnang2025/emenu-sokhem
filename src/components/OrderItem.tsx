@@ -173,24 +173,16 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
     });
 
     if (!success) {
-      // Fallback to browser print only on localhost or if explicitly enabled via query param / localStorage (e.g. for cashier/waiter tablets)
-      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      const enableFallback = typeof window !== 'undefined' && (window.localStorage.getItem('enable_print_fallback') === 'true' || window.location.search.includes('print_fallback=true'));
-
-      if (isLocal || enableFallback) {
-        console.log('[DirectPrint] DirectPrint server not reachable, falling back to browser print.');
-        const printWindow = window.open('', '_blank', 'height=600,width=400');
-        if (!printWindow) return;
-        printWindow.document.write(content);
-        printWindow.document.close();
-        printWindow.focus();
-        setTimeout(() => {
-          printWindow.print();
-          printWindow.close();
-        }, 500);
-      } else {
-        console.log('[DirectPrint] DirectPrint server not reachable. Skipped browser print fallback on guest device.');
-      }
+      // Fallback to browser print if DirectPrint server is not running
+      const printWindow = window.open('', '_blank', 'height=600,width=400');
+      if (!printWindow) return;
+      printWindow.document.write(content);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 500);
     }
   };
   // my code old
@@ -221,7 +213,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       };
       const jsonData = JSON.stringify(data)
       const response = await axios.post(
-        `https://${projectName}.tsdsolution.net/api/DriverController/order`,
+        `https://${projectName}.tsdsolution.net/api/DriverController/suspend`,
         jsonData,
         {
           headers: {
@@ -237,9 +229,6 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
         className: "font-battambong"
       });
 
-      // Direct printing is now handled natively by the POS system itself on the server side when the order is submitted to DriverController/order.
-      // Client-side DirectPrint is disabled below to avoid double-printing and customer print popups.
-      /*
       const drinkItems = basket.filter((item: any) => {
         const brand = item.brand?.toLowerCase();
         return brand === 'drink' || brand === 'standard';
@@ -251,7 +240,6 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
 
       if (kitchenItems.length > 0) await handlePrint(kitchenItems, "kitchen");
       if (drinkItems.length > 0) await handlePrint(drinkItems, "drink");
-      */
       // end akk
       dispatch(clearCart());
       setClickOrder(!isClickOrder);

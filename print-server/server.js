@@ -6,17 +6,6 @@ async function createServer() {
   const expressP = express();
   expressP.use(express.json({ limit: '20mb' }));
 
-  // Enable CORS middleware to allow local and external network cross-origin print requests
-  expressP.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
-    next();
-  });
-
   const TMP_DIR = path.join(__dirname, 'tmp');
   if (!fs.existsSync(TMP_DIR)) fs.mkdirSync(TMP_DIR, { recursive: true });
 
@@ -40,14 +29,7 @@ async function createServer() {
       await page.pdf({ path: tmpFile, width: '80mm', printBackground: true, margin: { top: '2mm', right: '2mm', bottom: '2mm', left: '2mm' } });
       await browser.close();
 
-      // Printer mapping logic: map logical names to physical Windows printers
-      const physicalPrinter = 
-        printerName.toLowerCase() === 'kitchen' ? (process.env.PRINTER_KITCHEN || 'kitchen') :
-        printerName.toLowerCase() === 'drink' ? (process.env.PRINTER_DRINK || 'drink') :
-        printerName;
-
-      console.log(`[print-server] Logical printer "${printerName}" mapped to physical printer "${physicalPrinter}"`);
-      await pdfToPrinter.print(tmpFile, { printer: physicalPrinter });
+      await pdfToPrinter.print(tmpFile, { printer: printerName });
 
       // cleanup
       fs.unlink(tmpFile, () => { });
@@ -59,7 +41,7 @@ async function createServer() {
     }
   });
 
-  const port = process.env.PRINT_SERVER_PORT || 8085;
+  const port = process.env.PRINT_SERVER_PORT || 3001;
   expressP.listen(port, () => console.log(`[print-server] Listening on http://0.0.0.0:${port}`));
 }
 

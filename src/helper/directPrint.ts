@@ -17,17 +17,16 @@ export function connectWS() {
       window.localStorage.setItem('print_server_url', printServer);
       console.log('[DirectPrint] Configured print server from URL query:', printServer);
     }
-    
+
     // Set default print server if not already configured
     let currentConfig = window.localStorage.getItem('print_server_url');
     if (!currentConfig) {
-      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      const defaultPrintServer = isLocal ? 'http://localhost:8085' : 'http://192.168.51.220:8085';
+      const defaultPrintServer = 'http://192.168.51.220:8085';
       window.localStorage.setItem('print_server_url', defaultPrintServer);
       currentConfig = defaultPrintServer;
       console.log('[DirectPrint] Set default print server:', defaultPrintServer);
     }
-    
+
     console.log('[DirectPrint] Ready (using HTTP API mode). Configured server:', currentConfig);
   }
 }
