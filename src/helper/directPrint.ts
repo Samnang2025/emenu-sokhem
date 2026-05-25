@@ -39,6 +39,28 @@ async function sendPrintJob(html: string, printerName: string): Promise<boolean>
       printServerUrl = process.env.NEXT_PUBLIC_PRINT_SERVER_URL;
     }
 
+    // If running on Vercel production and no print server is configured, prompt the user for the local server URL
+    const isVercel = typeof window !== 'undefined' && (
+      window.location.hostname.includes('vercel.app') || 
+      window.location.hostname.includes('amplifyapp.com')
+    );
+
+    if (isVercel && !printServerUrl) {
+      if (typeof window !== 'undefined') {
+        const inputUrl = window.prompt(
+          "សូមបញ្ចូលអាសយដ្ឋាន Local Print Server (ឧទាហរណ៍: http://localhost:3000 ឬ Cloudflare Tunnel URL) ដើម្បីបោះពុម្ព៖\n\nPlease enter your Local Print Server URL (e.g. http://localhost:3000) to print:"
+        );
+        if (inputUrl) {
+          printServerUrl = inputUrl.trim();
+          window.localStorage.setItem('print_server_url', printServerUrl);
+          console.log('[DirectPrint] Configured print server from prompt:', printServerUrl);
+        } else {
+          console.warn('[DirectPrint] Print cancelled: No print server configured.');
+          return false;
+        }
+      }
+    }
+
     const endpoint = printServerUrl 
       ? `${printServerUrl.replace(/\/$/, '')}/api/print` 
       : '/api/print';
