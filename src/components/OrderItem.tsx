@@ -30,7 +30,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
   const handlePrint = async (printItems: any[], printerName: string) => {
     if (printItems.length === 0) return;
 
-    const title = printerName.toLowerCase() === 'drink' ? 'Drink Order' : 'Kitchen Order';
+    const title = printerName.toLowerCase() === 'drink' ? 'Drink Order' : 'Food Order';
 
     const content = `
       <html>
@@ -233,12 +233,12 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
         const brand = item.brand?.toLowerCase();
         return brand === 'drink' || brand === 'standard';
       });
-      const kitchenItems = basket.filter((item: any) => {
+      const foodItems = basket.filter((item: any) => {
         const brand = item.brand?.toLowerCase();
         return brand !== 'drink' && brand !== 'standard';
       });
 
-      if (kitchenItems.length > 0) await handlePrint(kitchenItems, "Kitchen");
+      if (foodItems.length > 0) await handlePrint(foodItems, "Food");
       if (drinkItems.length > 0) await handlePrint(drinkItems, "Drink");
       // end akk
       dispatch(clearCart());

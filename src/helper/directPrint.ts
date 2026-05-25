@@ -21,7 +21,7 @@ export function connectWS() {
     // Set default print server if not already configured
     let currentConfig = window.localStorage.getItem('print_server_url');
     if (!currentConfig) {
-      const defaultPrintServer = 'http://192.168.51.220:8085';
+      const defaultPrintServer = 'http://192.168.51.220/DirectPrint_8085';
       window.localStorage.setItem('print_server_url', defaultPrintServer);
       currentConfig = defaultPrintServer;
       console.log('[DirectPrint] Set default print server:', defaultPrintServer);
