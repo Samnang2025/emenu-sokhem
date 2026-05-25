@@ -212,15 +212,23 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
         items: product,
       };
       const jsonData = JSON.stringify(data)
-      const response = await axios.post(
-        `https://${projectName}.tsdsolution.net/api/DriverController/order`,
-        jsonData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      // Send to both suspend and order endpoints at the same time
+      await Promise.all([
+        axios.post(
+          `https://${projectName}.tsdsolution.net/api/DriverController/suspend`,
+          jsonData,
+          {
+            headers: { 'Content-Type': 'application/json' },
+          }
+        ),
+        axios.post(
+          `https://${projectName}.tsdsolution.net/api/DriverController/order`,
+          jsonData,
+          {
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
+      ]);
 
       toast.dismiss(loading)
       toast.success("ការកុំម្ម៉ង់ទទួលបានជោគជ័យ!", {
