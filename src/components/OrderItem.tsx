@@ -221,7 +221,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       };
       const jsonData = JSON.stringify(data)
       const response = await axios.post(
-        `https://${projectName}.tsdsolution.net/api/DriverController/suspend`,
+        `https://${projectName}.tsdsolution.net/api/DriverController/order`,
         jsonData,
         {
           headers: {
@@ -237,6 +237,9 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
         className: "font-battambong"
       });
 
+      // Direct printing is now handled natively by the POS system itself on the server side when the order is submitted to DriverController/order.
+      // Client-side DirectPrint is disabled below to avoid double-printing and customer print popups.
+      /*
       const drinkItems = basket.filter((item: any) => {
         const brand = item.brand?.toLowerCase();
         return brand === 'drink' || brand === 'standard';
@@ -248,6 +251,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
 
       if (kitchenItems.length > 0) await handlePrint(kitchenItems, "kitchen");
       if (drinkItems.length > 0) await handlePrint(drinkItems, "drink");
+      */
       // end akk
       dispatch(clearCart());
       setClickOrder(!isClickOrder);
