@@ -173,16 +173,11 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
     });
 
     if (!success) {
-      // Fallback to browser print if DirectPrint server is not running
-      const printWindow = window.open('', '_blank', 'height=600,width=400');
-      if (!printWindow) return;
-      printWindow.document.write(content);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 500);
+      toast.error(`ការបោះពុម្ពទៅកាន់ម៉ាស៊ីន "${printerName}" បរាជ័យ! សូមពិនិត្យមើលម៉ាស៊ីនបោះពុម្ព ឬ Print Server។`, {
+        autoClose: 4000,
+        position: "top-center",
+        className: "font-battambang"
+      });
     }
   };
   // my code old
