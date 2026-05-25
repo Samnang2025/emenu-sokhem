@@ -229,18 +229,6 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
         className: "font-battambong"
       });
 
-      const drinkItems = basket.filter((item: any) => {
-        const brand = item.brand?.toLowerCase();
-        return brand === 'drink' || brand === 'standard';
-      });
-      const kitchenItems = basket.filter((item: any) => {
-        const brand = item.brand?.toLowerCase();
-        return brand !== 'drink' && brand !== 'standard';
-      });
-
-      if (foodItems.length > 0) await handlePrint(foodItems, "Food");
-      if (drinkItems.length > 0) await handlePrint(drinkItems, "Drink");
-      // end akk
       dispatch(clearCart());
       setClickOrder(!isClickOrder);
 

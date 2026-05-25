@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslation } from "@/lib/i18n";
 import { Loading } from "@/components/core";
+import { AutoPrinter } from "@/components";
 
 // Fallback tables mapped with IDs, Names and Zones
 const FALLBACK_TABLES = [
@@ -153,6 +154,12 @@ export default function TableSelectionPage() {
 
       {/* Main Container */}
       <div className="w-full max-w-[575px] flex-1 flex flex-col gap-4">
+        {/* POS Auto-Printing Terminal */}
+        <AutoPrinter 
+          projectName={Array.isArray(projectName) ? projectName[0] : projectName || ""} 
+          logoUrl={storeInfo.logoUrl} 
+        />
+
         {/* Search Input */}
         {/* <div className="relative w-full shadow-sm rounded-xl">
           <input
