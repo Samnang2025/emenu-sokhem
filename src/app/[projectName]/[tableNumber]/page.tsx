@@ -240,12 +240,18 @@ export default function Home() {
                   {/* === Custom UI for list style categories === */}
                   {isListStyle ? (
                     <div className="night-food-section">
-                      {/* Banner images - use first 2 item images */}
+                      {/* akk Banner images comment*/}
+                      {/* Banner images - retrieve all unique food images in this category */}
                       {category.items.length > 0 && (
                         <NightFoodBanner
-                          images={category.items
-                            .slice(0, 1)
-                            .map((item) => item.imagePath)}
+                          images={Array.from(
+                            new Set(
+                              category.items
+                                .map((item) => item.imagePath)
+                                .filter((img) => img && img.trim() !== "")
+                            )
+                          )}
+                          // {/* end Banner images comment*/}
                           imgUrl={imgUrl}
                         />
                       )}
