@@ -14,7 +14,7 @@ export default function BasketBar({ cur, historyOrder }: any) {
 
   return (
     <>
-      <div className="flex space-x-1 rounded-full p-3 bg-orange text-[21px] max-[450px]:text-[19px] max-[415px]:text-[16px] text-white w-10/12 flex-row justify-between items-center">
+      <div className="flex space-x-1 rounded-full p-2 bg-orange text-[18px] max-[450px]:text-[17px] max-[415px]:text-[16px] text-white w-10/12 flex-row justify-between items-center">
         <div
           className="flex flex-row justify-between items-center w-full"
           onClick={() => {
@@ -25,7 +25,7 @@ export default function BasketBar({ cur, historyOrder }: any) {
           }
         >
           <h1 className="text-nowrap font-dangrek text-white">{t("viewOrder")}</h1>
-          <div className="max-[450px]:text-[19px] max-[415px]:text-[16px] flex items-center gap-x-3 text-[21px] text-white">
+          <div className="max-[450px]:text-[17px] max-[415px]:text-[16px] flex items-center gap-x-3 text-[18px] text-white">
             <span>{cur || "$"}{numeral(displayPrice).format('0.[00]')}</span> {/* Sok Thean popup Component */}
             <p className="w-8 h-8 flex justify-center items-center bg-white text-orange rounded-full">
               {displayItems !== 0 ? displayItems : "0"}
