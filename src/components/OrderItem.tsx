@@ -23,7 +23,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
 
   const dispatch = useDispatch()
 
-    // Fetch table name fallback if history order is null
+  // Fetch table name fallback if history order is null
   const [tableName, setTableName] = useState("");
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
               {/* item cart  */}
               {
                 basket.map((item, index) => (
-                  <Item key={index} cartItem={item} cur={cur} />
+                  <Item key={index} cartItem={item} cur={cur} index={index} />
                 ))
               }
             </div>
@@ -147,7 +147,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
                 <div className="flex flex-col w-full space-y-3">
                   {
                     historyOrder?.items?.map((item: any, index: any) => (
-                      <HistoryOrder key={index} cartItem={item} cur={cur} />
+                      <HistoryOrder key={index} cartItem={item} cur={cur} index={index} />
                     ))
                   }
                 </div>

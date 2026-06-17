@@ -7,13 +7,14 @@ import { useTranslation } from '@/lib/i18n';
 
 type PropsType = {
     cartItem: orderHistory;
-    cur?: any
+    cur?: any;
+    index?: number;
 };
 
-export default function HistoryOrder({ cartItem, cur }: PropsType) {
+export default function HistoryOrder({ cartItem, cur, index }: PropsType) {
     const { locale } = useTranslation();
     const { projectName, tableNumber } = useParams();
-    const { name, second_name, price, id, imagePath, quantity, promo_price, } = cartItem;
+    const { name, second_name, price, id, imagePath, quantity, promo_price } = cartItem;
 
     const displayName = (locale === 'en' && second_name) ? second_name : name;
     // Format prices
@@ -28,6 +29,11 @@ export default function HistoryOrder({ cartItem, cur }: PropsType) {
             <div className="flex flex-row justify-between w-full px-3 py-1 mt-1">
                 {/* Item information (image, name, price, promo_price) */}
                 <div className='flex flex-row items-center space-x-4'>
+                    {index !== undefined && (
+                        <span className="text-gray-500 font-semibold text-sm">
+                            {index + 1}.
+                        </span>
+                    )}
                     {/* Image */}
                     <div className='h-[62px] w-[62px] rounded-lg overflow-hidden'>
                         <img src={`${imgUrl}/${imagePath}`} alt="" width={1000} height={1000} className="object-cover w-full h-full" />

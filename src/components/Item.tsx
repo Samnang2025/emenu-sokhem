@@ -8,10 +8,11 @@ import numeral from 'numeral';
 import { useTranslation } from '@/lib/i18n'; //ST Translation
 type PropsType = {
     cartItem: CartItem;
-    cur?: any
+    cur?: any;
+    index?: number;
 };
 
-export default function Item({ cartItem, cur }: PropsType) {
+export default function Item({ cartItem, cur, index }: PropsType) {
     //AKK Translation
     const { locale } = useTranslation();
     const { projectName } = useParams()
@@ -39,6 +40,11 @@ export default function Item({ cartItem, cur }: PropsType) {
             <div className="flex flex-row justify-between w-full  py-1 mt-1">
                 {/* item info (image, name, price, promo_price) */}
                 <div className='flex flex-row items-center space-x-4 '>
+                    {index !== undefined && (
+                        <span className="text-gray-500 font-semibold text-sm">
+                            {index + 1}.
+                        </span>
+                    )}
                     {/* img box  */}
                     <div className='h-[62px] w-[62px] rounded-lg overflow-hidden '>
                         <img src={`${imgUrl}/${imagePath}`} alt="" width={250} height={250} className="object-cover w-full h-full" />
