@@ -10,7 +10,7 @@ import numeral from "numeral";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { orderHistoryType } from "@/types/model";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useTranslation } from "@/lib/i18n";
 
 
@@ -32,7 +32,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
     } else if (tableNumber) {
       const fetchTableName = async () => {
         try {
-          const res = await axios.get(`https://tonle-coffee.pos.tsdsolution.net/api/DriverController/tables`);
+          const res = await axios.get(`https://pos-sokkhem.tsdsolution.net/api/DriverController/tables`);
           if (res.data && Array.isArray(res.data)) {
             const currentTable = res.data.find((t: any) => t.id === tableNumber);
             if (currentTable) {
@@ -54,8 +54,8 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
     const loading = toast.info("កំពុងធ្វើការកុម្ម៉ង់...", {
       autoClose: 2000,
       position: "top-center",
-      className: "font-battambang"
-
+      className: "font-battambang",
+      containerId: "modal-toast"
     });
 
     const product = basket.map(({ id, quantity, comment }) => ({
@@ -75,7 +75,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       };
       const jsonData = JSON.stringify(data)
       const response = await axios.post(
-        `https://tonle-coffee.pos.tsdsolution.net/api/DriverController/order`,
+        `https://pos-sokkhem.tsdsolution.net/api/DriverController/order`,
         jsonData,
         {
           headers: {
@@ -88,12 +88,17 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       toast.success("ការកុម្ម៉ង់ទទួលបានជោគជ័យ!", {
         autoClose: 2000,
         position: "top-center",
-        className: "font-battambong"
+        className: "font-battambang"
       });
 
       // end akk
       dispatch(clearCart());
       setClickOrder(!isClickOrder);
+
+      const modal = document.getElementById('my_modal_3') as HTMLDialogElement | null;
+      if (modal) {
+        modal.close();
+      }
 
     } catch (error) {
       console.error('Error sending order:', error);
@@ -101,7 +106,8 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       toast.error("ការកុំម្ម៉ង់បរាជ័យ! សូមព្យាយាមម្តងទៀត!", {
         autoClose: 2000,
         position: "top-center",
-        className: "font-battambong"
+        className: "font-battambang",
+        containerId: "modal-toast"
       });
     } finally {
       setIsLoading(false);
@@ -114,6 +120,7 @@ export default function OrderItem({ cur, historyOrder, setHistoryOrder, isClickO
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
 
       <dialog id={"my_modal_3"} className={`modal backdrop-blur-[2px]`}>
+        <ToastContainer containerId="modal-toast" position="top-center" style={{ zIndex: 99999 }} />
         <div className="modal-box p-0 bg-white text-gray-900">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
