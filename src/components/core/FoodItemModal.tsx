@@ -27,6 +27,7 @@ const FoodItemModal: React.FC<PropType> = ({
   const [comment, setComment] = useState("");
   const [sugarLevel, setSugarLevel] = useState("");
   const [iceLevel, setIceLevel] = useState("");
+  const [spicyLevel, setSpicyLevel] = useState("");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,7 +38,16 @@ const FoodItemModal: React.FC<PropType> = ({
   //AKK Translation
   const { locale, t } = useTranslation();
 
-  const { name, second_name, imagePath, price, promo_price, brand } = cartItem;
+  const { name, second_name, imagePath, price, promo_price, brand, type, subcategory } = cartItem;
+  const isSpicyNoodle = 
+    type?.includes("មីហឹរ") || 
+    subcategory?.includes("មីហឹរ") || 
+    brand?.includes("មីហឹរ") ||
+    name?.includes("មីហឹរ") ||
+    second_name?.includes("មីហឹរ") ||
+    (cartItem as any).category === "មីហឹរ" ||
+    (cartItem as any).category?.includes("មីហឹរ");
+
   const displayName = (locale === 'en' && second_name) ? second_name : name;
   //End AKK Translation
   const real_price = numeral(promo_price).format("0.[00]");
@@ -47,20 +57,25 @@ const FoodItemModal: React.FC<PropType> = ({
 
   const handleAdd = () => {
     let finalComment = comment;
+    const selections = [];
+    
     if (brand === "Drink") {
-      const selections = [];
       if (sugarLevel) selections.push(`Sugar: ${sugarLevel}`);
       if (iceLevel) selections.push(`Ice: ${iceLevel}`);
-      
-      if (selections.length > 0) {
-        const customization = `[${selections.join(", ")}]`;
-        finalComment = comment ? `${customization} ${comment}` : customization;
-      }
+    } else if (isSpicyNoodle) {
+      if (spicyLevel) selections.push(`Spicy: ${spicyLevel}`);
     }
+    
+    if (selections.length > 0) {
+      const customization = `[${selections.join(", ")}]`;
+      finalComment = comment ? `${customization} ${comment}` : customization;
+    }
+    
     onAdd(finalComment);
     setComment(""); // Reset comment after adding
     setSugarLevel(""); // Reset sugar
     setIceLevel(""); // Reset ice
+    setSpicyLevel(""); // Reset spicy
     onClose();
   };
 
@@ -149,6 +164,32 @@ const FoodItemModal: React.FC<PropType> = ({
                       }`}
                     >
                       {level === "Lots ice" ? t("lotsIceLabel") : t("lessIceLabel")}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Spicy Level for មីហឹរ */}
+          {isSpicyNoodle && (
+            <div className="mb-6 space-y-4">
+              <div>
+                <label className="block text-sm font-battambong font-semibold text-gray-700 mb-2">
+                  {t("spicyLevelLabel")}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {["កម្រិត 1", "កម្រិត 2", "កម្រិត 3", "កម្រិត 4", "កម្រិត 5", "កម្រិត 6", "កម្រិត 7"].map((level) => (
+                    <button
+                      key={level}
+                      onClick={() => setSpicyLevel(spicyLevel === level ? "" : level)}
+                      className={`px-4 py-2 rounded-full text-sm font-battambong transition-all ${
+                        spicyLevel === level
+                          ? "bg-orange text-white shadow-md scale-105"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      {level}
                     </button>
                   ))}
                 </div>
