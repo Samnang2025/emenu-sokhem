@@ -25,9 +25,8 @@ const FoodItemModal: React.FC<PropType> = ({
   imgUrl,
 }) => {
   const [comment, setComment] = useState("");
-  const [sugarLevel, setSugarLevel] = useState("");
-  const [iceLevel, setIceLevel] = useState("");
   const [spicyLevel, setSpicyLevel] = useState("");
+  const [chiliLevel, setChiliLevel] = useState("");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -48,6 +47,15 @@ const FoodItemModal: React.FC<PropType> = ({
     (cartItem as any).category === "មីហឹរ" ||
     (cartItem as any).category?.includes("មីហឹរ");
 
+  const isPapayaSalad = 
+    type?.includes("បុកល្ហុង") || 
+    subcategory?.includes("បុកល្ហុង") || 
+    brand?.includes("បុកល្ហុង") ||
+    name?.includes("បុកល្ហុង") ||
+    second_name?.includes("បុកល្ហុង") ||
+    (cartItem as any).category === "បុកល្ហុង" ||
+    (cartItem as any).category?.includes("បុកល្ហុង");
+
   const displayName = (locale === 'en' && second_name) ? second_name : name;
   //End AKK Translation
   const real_price = numeral(promo_price).format("0.[00]");
@@ -59,11 +67,10 @@ const FoodItemModal: React.FC<PropType> = ({
     let finalComment = comment;
     const selections = [];
     
-    if (brand === "Drink") {
-      if (sugarLevel) selections.push(`Sugar: ${sugarLevel}`);
-      if (iceLevel) selections.push(`Ice: ${iceLevel}`);
-    } else if (isSpicyNoodle) {
-      if (spicyLevel) selections.push(`Spicy: ${spicyLevel}`);
+    if (isSpicyNoodle) {
+      if (spicyLevel) selections.push(`កម្រិត: ${spicyLevel}`);
+    } else if (isPapayaSalad) {
+      if (chiliLevel) selections.push(`ម្ទេស: ${chiliLevel}`);
     }
     
     if (selections.length > 0) {
@@ -73,9 +80,8 @@ const FoodItemModal: React.FC<PropType> = ({
     
     onAdd(finalComment);
     setComment(""); // Reset comment after adding
-    setSugarLevel(""); // Reset sugar
-    setIceLevel(""); // Reset ice
     setSpicyLevel(""); // Reset spicy
+    setChiliLevel(""); // Reset chili
     onClose();
   };
 
@@ -121,22 +127,22 @@ const FoodItemModal: React.FC<PropType> = ({
               )}
             </div>
           </div>
-
-          {/* Drink Customization */}
-          {brand === "Drink" && (
+           
+        
+          {/* Spicy Level for មីហឹរ */}
+          {isSpicyNoodle && (
             <div className="mb-6 space-y-4">
-              {/* Sugar Level */}
               <div>
                 <label className="block text-sm font-battambong font-semibold text-gray-700 mb-2">
-                  {t("sugarLevelLabel")}
+                  {t("spicyLevelLabel")}
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {["0%","10%","20%","30%", "50%","70%","80%","100%"].map((level) => (
+                  {["កម្រិត 1", "កម្រិត 2", "កម្រិត 3", "កម្រិត 4", "កម្រិត 5", "កម្រិត 6", "កម្រិត 7", "កម្រិត 8", "កម្រិត 9"].map((level) => (
                     <button
                       key={level}
-                      onClick={() => setSugarLevel(sugarLevel === level ? "" : level)}
+                      onClick={() => setSpicyLevel(spicyLevel === level ? "" : level)}
                       className={`px-4 py-2 rounded-full text-sm font-battambong transition-all ${
-                        sugarLevel === level
+                        spicyLevel === level
                           ? "bg-orange text-white shadow-md scale-105"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
@@ -146,45 +152,23 @@ const FoodItemModal: React.FC<PropType> = ({
                   ))}
                 </div>
               </div>
-
-              {/* Ice Level */}
-              <div>
-                <label className="block text-sm font-battambong font-semibold text-gray-700 mb-2">
-                  {t("iceLevelLabel")}
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {["Lots ice", "less ice"].map((level) => (
-                    <button
-                      key={level}
-                      onClick={() => setIceLevel(iceLevel === level ? "" : level)}
-                      className={`px-4 py-2 rounded-full text-sm font-battambong transition-all ${
-                        iceLevel === level
-                          ? "bg-orange text-white shadow-md scale-105"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      {level === "Lots ice" ? t("lotsIceLabel") : t("lessIceLabel")}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
 
-          {/* Spicy Level for មីហឹរ */}
-          {isSpicyNoodle && (
+          {/* Chili Level for បុកល្ហុង */}
+          {isPapayaSalad && (
             <div className="mb-6 space-y-4">
               <div>
                 <label className="block text-sm font-battambong font-semibold text-gray-700 mb-2">
-                  {t("spicyLevelLabel")}
+                  {t("chiliLevelLabel")}
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {["កម្រិត 1", "កម្រិត 2", "កម្រិត 3", "កម្រិត 4", "កម្រិត 5", "កម្រិត 6", "កម្រិត 7"].map((level) => (
+                  {["អត់ម្ទេស", "1 គ្រាប់", "2 គ្រាប់", "3 គ្រាប់", "4 គ្រាប់", "5 គ្រាប់", "6 គ្រាប់", "7 គ្រាប់", "8 គ្រាប់", "9 គ្រាប់", "10 គ្រាប់"].map((level) => (
                     <button
                       key={level}
-                      onClick={() => setSpicyLevel(spicyLevel === level ? "" : level)}
+                      onClick={() => setChiliLevel(chiliLevel === level ? "" : level)}
                       className={`px-4 py-2 rounded-full text-sm font-battambong transition-all ${
-                        spicyLevel === level
+                        chiliLevel === level
                           ? "bg-orange text-white shadow-md scale-105"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}

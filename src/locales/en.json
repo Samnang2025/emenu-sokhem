@@ -42,6 +42,7 @@
     "sugarLevelLabel": "Sugar Level",
     "spicyLevelLabel": "Spicy Level",
     "iceLevelLabel": "Ice Level",
+    "chiliLevelLabel": "Number of Chilis",
     "lotsIceLabel": "Lots ice",
     "lessIceLabel": "Less ice",
     "optionalCommentLabel": "Optional Comment",
